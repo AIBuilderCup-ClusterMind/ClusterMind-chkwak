@@ -90,9 +90,14 @@ func (a *Analyzer) Investigate(
 		return fallbackInvestigation(req, affected)
 	}
 
+	provider := "gemini"
+	if a.engine != nil {
+		provider = a.engine.Provider()
+	}
+
 	return &InvestigationResult{
 		IncidentID:         req.IncidentID,
-		GeneratedBy:        "gemini",
+		GeneratedBy:        provider,
 		Summary:            parsed.Summary,
 		ObservedFacts:      nonEmpty(parsed.ObservedFacts),
 		PossibleCauses:     clampCauses(parsed.PossibleCauses),

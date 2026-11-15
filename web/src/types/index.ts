@@ -86,7 +86,7 @@ export interface SupportingEvidenceRef {
 
 export interface InvestigationResult {
   incidentId: string
-  generatedBy: 'gemini' | 'fallback'
+  generatedBy: 'gemini' | 'openai' | 'fallback' | (string & {})
   summary: string
   observedFacts: string[]
   possibleCauses: PossibleCause[]
@@ -206,3 +206,58 @@ export interface NamespaceResourcesResponse {
   namespace: string
   resources: ResourceStatus[]
 }
+
+// ── AI Settings (GET & POST /api/v1/settings) ───────────────────────────────
+
+export interface ProviderInfo {
+  id: string
+  name: string
+  defaultModel: string
+  models: string[]
+  keyHelpUrl: string
+  keyPrefix: string
+}
+
+export interface AISettings {
+  provider: string
+  model: string
+  hasApiKey: boolean
+  maskedApiKey: string
+  supportedProviders: ProviderInfo[]
+}
+
+export interface UpdateSettingsRequest {
+  provider: string
+  model: string
+  apiKey?: string
+}
+
+export interface TestSettingsRequest {
+  provider: string
+  model: string
+  apiKey?: string
+}
+
+export interface TestSettingsResponse {
+  success: boolean
+  message?: string
+  error?: string
+}
+
+export interface ModelItem {
+  id: string
+  displayName: string
+  description?: string
+}
+
+export interface ListModelsRequest {
+  provider: string
+  apiKey?: string
+}
+
+export interface ListModelsResponse {
+  provider: string
+  models: ModelItem[]
+}
+
+
